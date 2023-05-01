@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% if profile %}
+<div class="container ">
+    <div class="row">
+        <div class="col-2" style=" margin-right: 40px;">
+
+        </div>
+
+        <div class="col-6"
+            style="border-right: 1px solid rgb(190, 190, 190); padding-right: 0px; background-color: white;">
+
+
+
+            <div class="text-center">
+                {% if current_user.user.username == profile.user.username %}
+                <h1>Your Tweets</h1>
+                {% else %}
+                <h1>{{ profile.user.username }}'s Tweets</h1>
+                {% endif %}
+            </div>
+
+
+            <hr>
+            <br>
+            {% if tweets %}
+            {% for tweet in tweets %}
+            <div class="card border-light shadow" style="width: 35rem; margin-left: 2rem; background-color: white;">
+                <div class="card-header fw-bold">
+                    <div class="row">
+
+                        <div class="col-1">
+
+                            <img src="{{ tweet.user.profile.get_photo_url }}" alt="Profile Picture"
+                                style="width: 40px; height: 40px; border: 1px solid white;" class="rounded-circle">
+
+                        </div>
+
+
+                        <div class="col-10 align-self-center">
+                            <a href="{% url 'profile' tweet.user.id %}" class="btn border-0">{{ tweet.user }}</a>
+                        </div>
+                        <div class="col-1">
+                            {% if current_user.user.username == profile.user.username %}
+                            <a href="{% url 'delete_tweet' tweet.id %}" class="text-secondary"><i
+                                    class="fa fa-close"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ tweet.body }}</p>
+                    {% if tweet.image %}
+                    <img src="{{ tweet.image.url }}" alt="tweet image" style="height: 250px; width: 300px;">
+                    {% endif %}
+                </div>
+                <div class="card-footer fw-light fst-italic ">
+                    <div class="row">
+                        <div class="col-9">{{ tweet.created_at }}</div>
+                        <div class="col-3">
+                            {{tweet.like_counter}} likes
+                            <a href="{% url 'like_tweet' tweet.id %}">
+                                {% if user in tweet.likes.all %}
+                                <i class="fa-solid fa-heart"></i>
+                                {% else %}
+                                <i class="fa fa-heart-o"></i>
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div> <br> <br>
+            {% endfor %}
+            {% else %}
+            <small class="text-body-secondary"><u>No tweets yet</u> </small>
+            {% endif %}
+
+        </div>
+        <div class="col-3" style="margin-left: 3rem;">
+            <br><br><br>
+            <div class="text-center">
+
+                <img src="{{ profile.get_photo_url }}" alt="Profile Picture"
+                    style="width: 200px; height: 200px; border: 2px solid #1D9BF0;" class="rounded-circle">
+                <br>
+                {% if request.user.id == profile.user.id %}
+                <a href="{% url 'edit' %}" class="btn"><i class="fa-solid fa-edit"></i></a>
+                {% endif %}
+                <br>
+
+            </div>
+            <div class="text-center">
+                {% if current_user.user.username != profile.user.username %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {% if profile in user.profile.follows.all %}
+                    <button class=" btn btn-danger" name="follow" value="unfollow" type="submit"
+                        style="border-radius: 9999px;padding-left: 32px;
+                padding-right: 32px;  color: white;   background-color: rgb(29, 155, 240);border-color: rgba(0, 0, 0, 0); ">Unfollow</button>
+
+                    {% else %}
+                    <button class=" btn btn-primary" name="follow" value="follow" type="submit"
+                        style="border-radius: 9999px;padding-left: 32px;
+                padding-right: 32px;  color: white;   background-color: rgb(29, 155, 240);border-color: rgba(0, 0, 0, 0); ">follow</button>
+                    {% endif %}
+                </form>
+                {% endif %}
+            </div>
+            <hr>
+            <div class="card shadow-sm" style="width: 15rem; border: 0px; margin-left: 2rem; ">
+                <div class="card-header" style="background-color: #1D9BF0; color:white;border-radius: 5px;">
+                    Following
+                </div>
+                <div class="card-body">
+
+                    <p class="card-text m-0">
+                        {% for following in profile.follows.all %}
+                        <a href="{% url 'profile' following.user.id %}" class="fw-bold btn d-flex">
+                            <img src="{{ following.user.profile.get_photo_url }}" alt="Profile Picture"
+                                style="width: 50px; height: 50px; border: 1px solid white;" class="rounded-circle">
+                            <span style="margin-top: 15px; margin-left: 15px;">{{following}}</span>
+                        </a>
+                        <hr style="margin: 0px;">
+
+                        {%endfor%}
+                    </p>
+                </div>
+            </div>
+            <br>
+            <div class="card shadow-sm" style="width: 15rem; border: 0px; margin-left: 2rem;">
+                <div class="card-header" style="background-color: #1D9BF0; color:white;border-radius: 5px;">
+                    Followers
+                </div>
+                <div class="card-body">
+                    <p class="card-text m-0">{% for follower in profile.followed_by.all %}
+                        <a href="{% url 'profile' follower.user.id %}" class="fw-bold btn d-flex">
+
+                            <img src="{{ follower.user.profile.get_photo_url }}" alt="Profile Picture"
+                                style="width: 50px; height: 50px; border: 1px solid white;" class="rounded-circle">
+                            <span style="margin-top: 15px; margin-left: 15px;">{{follower}}</span>
+                        </a>
+                        <hr style="margin: 0px;">
+                        {%endfor%}
+                    </p>
+
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+
+{% endblock %}

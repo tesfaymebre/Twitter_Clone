@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row">
+
+    <div class="col-2 text-center mx-4">
+        <br><br><br>
+
+
+
+
+    </div>
+    <div class="col-6 " style="padding-right: 0;background-color: rgb(255, 255, 255);">
+        <h1 class="text-center">Tweets</h1>
+        <hr>
+        <br>
+        {% for tweet in tweets %}
+        <div class="card border-light shadow" style="width: 35rem; margin-left: 2rem; background-color: white;">
+            <div class="card-header fw-bold">
+                <div class="row">
+
+                    <div class="col-1">
+
+                        <img src="{{ tweet.user.profile.get_photo_url }}" alt="Profile Picture"
+                            style="width: 40px; height: 40px; border: 1px solid white;" class="rounded-circle">
+
+                    </div>
+
+
+                    <div class="col-9 align-self-center">
+                        <a href="{% url 'profile' tweet.user.id %}" class="btn border-0">{{ tweet.user }}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ tweet.body }}</p>
+                {% if tweet.tag %}
+                <form action="{% url 'hashtag' %}" method="POST">
+                    {% csrf_token %}
+
+                    {% if tweet.tag %}
+                    <button class="btn border-0" name="tag" value="{{tweet.tag}}" type="submit"
+                        style="padding: 10px; color: rgb(14, 126, 255); ">#{{tweet.tag}}</button>
+                    {% endif %}
+
+                </form>
+
+                {% endif %}
+                {% if tweet.image %}
+                <img src="{{ tweet.image.url }}" alt="tweet image" style="height: 250px; width: 300px;">
+                {% endif %}
+
+            </div>
+            <div class="card-footer fw-light fst-italic ">
+                <div class="row">
+                    <div class="col-9">{{ tweet.created_at }}</div>
+                    <div class="col-3">
+                        {{tweet.like_counter}} likes
+                        <a href="{% url 'like_tweet' tweet.id %}">
+                            {% if user in tweet.likes.all %}
+                            <i class="fa-solid fa-heart"></i>
+                            {% else %}
+                            <i class="fa fa-heart-o"></i>
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div> <br> <br>
+
+        {% endfor %}
+
+    </div>
+    <div class="col-3 text-center" style="border-left: 1px solid rgb(169, 169, 169); background-color: aliceblue;">
+        <br><br>
+        <form class="d-flex" role="search" action="{% url 'search' %}" method="POST">
+            {% csrf_token %}
+            <input class="form-control me-2" type="search" placeholder="Username" aria-label="Search" name="username">
+            <button class="btn btn-outline" style="background-color: rgb(41, 155, 255); color: white;"
+                type="submit">Search</button>
+        </form>
+
+        <br>
+        <div class="text-center">
+
+            <form action="{% url 'hashtag' %}" method="POST">
+                {% csrf_token %}
+                {% for tweet in tweets %}
+                {% if tweet.tag %}
+                <button class="btn border-0 text-primary fw-bold" name="tag" value="{{tweet.tag}}" type="submit"
+                    style="padding: 10px; " id="tags">#{{tweet.tag}}</button>
+                {% endif %}
+                {% endfor %}
+            </form>
+
+        </div><br>
+    </div>
+</div>
+<style>
+    #tags {
+        background-color: rgba(58, 163, 255, 0.142);
+
+        margin: 5px;
+    }
+
+    #tags:hover {
+
+        background-color: rgba(58, 163, 255, 0.464);
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-md-6 offset-md-3">
+    {% if user.is_authenticated %}
+    <h1>You are already registerd in!</h1>
+    {% else %}
+    <h1 class="text-center">Sign up</h1>
+
+    <hr>
+    <br>
+    <form method="POST" action="{% url 'register' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="text-center"><button type="submit" class="btn btn-primary">Register</button>
+            <a href="{% url 'login' %}" class="btn">Cancel</a>
+        </div>
+
+    </form>
+    {% endif %}
+    {%endblock%}
+</div>

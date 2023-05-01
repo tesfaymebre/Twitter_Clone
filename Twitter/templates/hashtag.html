@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="col-md-6 offset-md-3">
+    <h1 class="text-center">Results</h1>
+    <hr>
+    {% if tweets %}
+
+
+
+    {% for tweet in tweets %}
+    <div class="card border-light shadow" style="width: 35rem; margin-left: 2rem; background-color: white;">
+        <div class="card-header fw-bold">
+            <div class="row">
+
+                <div class="col-1">
+
+                    <img src="{{ tweet.user.profile.get_photo_url }}" alt="Profile Picture"
+                        style="width: 40px; height: 40px; border: 1px solid white;" class="rounded-circle">
+
+                </div>
+
+
+                <div class="col-9 align-self-center">
+                    <a href="{% url 'profile' tweet.user.id %}" class="btn border-0">{{ tweet.user }}</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ tweet.body }}</p>
+            {% if tweet.tag %}
+            <p class="card-text" style="color: rgba(27, 103, 255, 0.978);">#{{ tweet.tag }}</p>
+            {% endif %}
+            {% if tweet.image %}
+            <img src="{{ tweet.image.url }}" alt="tweet image" style="height: 250px; width: 300px;">
+            {% endif %}
+
+        </div>
+        <div class="card-footer fw-light fst-italic ">
+            <div class="row">
+                <div class="col-9">{{ tweet.created_at }}</div>
+                <div class="col-3">
+                    {{tweet.like_counter}} likes
+                    <a href="{% url 'like_tweet' tweet.id %}">
+                        {% if user in tweet.likes.all %}
+                        <i class="fa-solid fa-heart"></i>
+                        {% else %}
+                        <i class="fa fa-heart-o"></i>
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div> <br> <br>
+    {% endfor %}
+
+    <br /> <br />
+
+
+    {% else %}
+
+    <h1>No Result</h1>
+    {% endif %}
+
+</div>
+{%endblock%}

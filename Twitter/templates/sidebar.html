@@ -1,0 +1,91 @@
+<nav class="sidenav   text-center" style=" border-right: 1px solid rgb(195, 195, 195); background-color: aliceblue;">
+    <a class="btn my-3 " id="logo" href="{% url 'home' %}"><i class="fa-brands fa-twitter fa-2x"
+            style="color:rgb(29, 155, 240) ;"></i></a> <br>
+
+
+
+    <a class="btn" style="font-size:x-large; color: black;" href="{% url 'home' %}"><i class="fa fa-home fa-lg"
+            id="icons"></i>
+        &nbsp Home</a><br>
+    <!-- <a class="nav-link" href=""><i class="fa fa-hashtag" id="icons"></i> Explore</a> -->
+    <a class="btn" style="font-size:x-large; color: black;" href="{% url 'profile' request.user.id %}"><i
+            class="fa-solid fa-user fa-lg"></i> &nbsp
+        Profile</a>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <a href="{% url 'tweet' %}" class="btn fw-bold "
+        style="border-radius: 9999px;padding-left: 32px;
+                padding-right: 32px;  color: white;   background-color: rgb(29, 155, 240);border-color: rgba(0, 0, 0, 0); " id="tweet_btn">
+        Tweet</a>
+    <br><br>
+    <a class="btn" style="font-size:x-large; color: black;" href="{% url 'logout' %}"><i
+            class="fa-solid fa-right-from-bracket"></i> &nbsp Logout</a>
+
+</nav>
+
+<!-- Modal -->
+
+
+<style>
+    #logo:hover {
+        background-color: rgba(95, 185, 253, 0.186);
+    }
+
+    #tweet_btn:hover {
+        padding-left: 40px !important;
+        padding-right: 40px !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
+
+    /* The sidebar menu */
+    .sidenav {
+        height: 100%;
+        /* Full-height: remove this if you want "auto" height */
+        width: 25%;
+        /* Set the width of the sidebar */
+        position: fixed;
+        /* Fixed Sidebar (stay in place on scroll) */
+        z-index: 1;
+        /* Stay on top */
+        top: 100;
+        /* Stay at the top */
+        left: 0;
+        overflow-x: hidden;
+        /* Disable horizontal scroll */
+        padding-top: 40px;
+        /* padding-left: 70px; */
+    }
+
+    /* The navigation menu links */
+    .sidenav a,
+    button {
+        padding: 6px 8px 10px 20px;
+        border-radius: 2rem;
+        text-decoration: none;
+        font-size: 18px;
+        color: #818181;
+        display: flexbox;
+    }
+
+    /* When you mouse over the navigation links, change their color */
+    .sidenav a:hover {
+        background-color: rgba(29, 156, 240, 0.434);
+        padding-left: 40px !important;
+        padding-right: 40px !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+        /* display: flexbox; */
+        /* display: inline; */
+    }
+
+    /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+    @media screen and (max-height: 450px) {
+        .sidenav {
+            padding-top: 15px;
+        }
+
+        .sidenav a {
+            font-size: 18px;
+        }
+    }
+</style>

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-3 mx-3"></div>
+    <div class="col-6">{% if user.is_authenticated %}
+        <h1>You are already logged in!</h1>
+        {% else %}
+        <h1 class="text-center">Login</h1>
+
+        <hr>
+        <br>
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label fw-light">Username</label>
+                <input type="text" class="form-control" name="username" placeholder=" Enter your username here">
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-light">Password</label>
+                <input type="password" class="form-control" name="password" placeholder="Enter you password here">
+            </div>
+            <br>
+            <div class="text-center">
+                <button type="submit" class="btn fw-bold"
+                    style="border-radius: 9999px;padding-left: 32px;
+                padding-right: 32px;  color: white;   background-color: rgb(29, 155, 240);border-color: rgba(0, 0, 0, 0); ">Login</button>
+            </div>
+            <br>
+            <div class="text-center">
+                <small>don't have an account?</small> <br> <a href="{% url 'register' %}"><small>
+                        <p>Sign Up</p>
+                    </small>
+                </a>
+            </div>
+
+        </form>
+        {% endif %}
+    </div>
+    <div class="col-3"></div>
+</div>
+<!-- <div class="col-md-6 offset-md-3"> -->
+
+<!-- </div> -->
+
+{% endblock %}
